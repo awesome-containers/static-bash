@@ -19,9 +19,11 @@ ARG CFLAGS="-Wno-parentheses -Wno-format-security -w -g -Os -static"
 RUN set -xeu; \
     autoconf -f; \
     ./configure --without-bash-malloc; \
-    make; \
+    make -j"$(nproc)"; \
     # make tests; \
-    chmod -cR 755 bash; chown -cR 0:0 bash
+    chmod -cR 755 bash; chown -cR 0:0 bash; \
+    ! ldd bash && :; \
+    ./bash --version
 
 # static Bash image
 FROM scratch

@@ -1,6 +1,6 @@
 # Statically linked Bash
 
-Statically linked Bash 5.2 container image
+Statically linked **Bash** container image
 
 > 4.5M
 
@@ -12,7 +12,7 @@ docker.io/awesomecontainers/static-bash:latest
 docker.io/awesomecontainers/static-bash:5.2.15
 ```
 
-Slim statically linked Bash 5.2 container image packaged with UPX
+Slim statically linked **Bash** container image stripped and packaged with [UPX]
 
 > 574K
 
@@ -26,3 +26,5 @@ docker.io/awesomecontainers/static-bash:5.2.15-slim
 
 * <https://www.gnu.org/software/bash/>
 * <http://ftp.gnu.org/gnu/bash/>
+
+[UPX]: https://upx.github.io/

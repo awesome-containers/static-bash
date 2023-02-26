@@ -11,7 +11,9 @@ RUN set -xeu; \
     upx --no-progress --no-color bash; \
     upx -t --no-progress --no-color bash; \
     chmod -cR 755 bash; \
-    chown -cR 0:0 bash
+    chown -cR 0:0 bash; \
+    ! ldd bash && :; \
+    ./bash --version
 
 # slim static Bash image
 FROM scratch
