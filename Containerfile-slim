@@ -1,0 +1,19 @@
+ARG STATIC_BASH_VERSION=5.2.15
+FROM ghcr.io/awesome-containers/static-bash:$STATIC_BASH_VERSION AS bash
+
+FROM ghcr.io/awesome-containers/alpine-build-essential:3.17 AS build
+
+WORKDIR /src/
+COPY --from=bash /bin/bash ./
+
+RUN set -xeu; \
+    strip -s -R .comment -R .gnu.version --strip-unneeded bash; \
+    upx --no-progress --no-color bash; \
+    upx -t --no-progress --no-color bash; \
+    chmod -cR 755 bin/bash; \
+    chown -cR 0:0 bash
+
+# slim static Bash image
+FROM scratch
+COPY --from=build /src/bash /bin/bash
+ENTRYPOINT ["/bin/bash"]
