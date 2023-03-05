@@ -1,13 +1,19 @@
+# https://github.com/awesome-containers/static-bash
 ARG STATIC_BASH_VERSION=5.2.15
-FROM ghcr.io/awesome-containers/static-bash:$STATIC_BASH_VERSION AS static-bash
+ARG STATIC_BASH_IMAGE=ghcr.io/awesome-containers/static-bash
 
-FROM ghcr.io/awesome-containers/alpine-build-essential:3.17 AS build
+# https://github.com/awesome-containers/alpine-build-essential
+ARG BUILD_ESSENTIAL_VERSION=3.17
+ARG BUILD_ESSENTIAL_IMAGE=ghcr.io/awesome-containers/alpine-build-essential
+
+
+FROM $STATIC_BASH_IMAGE:$STATIC_BASH_VERSION AS static-bash
+FROM $BUILD_ESSENTIAL_IMAGE:$BUILD_ESSENTIAL_VERSION AS build
 
 WORKDIR /src/
 COPY --from=static-bash /bin/bash ./
 
 RUN set -xeu; \
-    strip -s -R .comment -R .gnu.version --strip-unneeded bash; \
     upx --no-progress --no-color bash; \
     upx -t --no-progress --no-color bash; \
     chmod -cR 755 bash; \

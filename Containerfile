@@ -1,4 +1,9 @@
-FROM ghcr.io/awesome-containers/alpine-build-essential:3.17 AS build
+# https://github.com/awesome-containers/alpine-build-essential
+ARG BUILD_ESSENTIAL_VERSION=3.17
+ARG BUILD_ESSENTIAL_IMAGE=ghcr.io/awesome-containers/alpine-build-essential
+
+
+FROM $BUILD_ESSENTIAL_IMAGE:$BUILD_ESSENTIAL_VERSION AS build
 
 # https://www.gnu.org/software/bash/
 ARG BASH_VERSION=5.2.15
@@ -21,7 +26,9 @@ RUN set -xeu; \
     ./configure --without-bash-malloc; \
     make -j"$(nproc)"; \
     # make tests; \
-    chmod -cR 755 bash; chown -cR 0:0 bash; \
+    strip -s -R .comment --strip-unneeded bash; \
+    chmod -cR 755 bash; \
+    chown -cR 0:0 bash; \
     ! ldd bash && :; \
     ./bash --version
 
